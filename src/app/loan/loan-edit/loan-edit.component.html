@@ -1,0 +1,47 @@
+<div class="container">
+    <h1 *ngIf="id == null">Crear prestamo</h1>
+    <h1 *ngIf="id != null">Modificar prestamo</h1>
+
+    <form>
+        <mat-form-field>
+            <mat-label>Identificador</mat-label>
+            <input type="text" matInput placeholder="Identificador" [(ngModel)]="id" name="id" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Cliente</mat-label>
+            <mat-select disableRipple [(ngModel)]="client" name="client" [compareWith]="compareById" required>
+                <mat-option *ngFor="let c of clients" [value]="c">{{c.name}}</mat-option>
+            </mat-select>
+            <mat-error>El cliente no puede estar vacío</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Juego</mat-label>
+           <mat-select disableRipple [(ngModel)]="game" name="game" [compareWith]="compareById" required>
+                <mat-option *ngFor="let g of games" [value]="g">{{g.title}}</mat-option>
+            </mat-select>
+            <mat-error>El juego no puede estar vacía</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Fecha de inicio</mat-label>
+           <input matInput [matDatepicker]="startpicker" [(ngModel)]="startDate" name="startDate" required>
+                    <mat-datepicker-toggle matIconSuffix [for]="startpicker"></mat-datepicker-toggle>
+                <mat-datepicker #startpicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Fecha de fin</mat-label>
+           <input matInput [matDatepicker]="endpicker" [(ngModel)]="endDate" name="endDate" required>
+                    <mat-datepicker-toggle matIconSuffix [for]="endpicker"></mat-datepicker-toggle>
+                <mat-datepicker #endpicker></mat-datepicker>
+        </mat-form-field>
+    </form>
+    <p class ="error" *ngIf="invalidDates">La fecha de devolucion no puede ser anterior a la fecha de prestamo</p>
+ <p class ="error" *ngIf="errorMessage">{{errorMessage}}</p>
+    <div class="buttons">
+        <button mat-stroked-button (click)="onClose()">Cancelar</button>
+        <button mat-flat-button color="primary" (click)="onSave()" [disabled]="!game || !client || !startDate || !endDate || invalidDates">Guardar</button>
+    </div>
+</div>
